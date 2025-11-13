@@ -1,0 +1,40 @@
+name: Build macOS 12 App
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-12
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pyinstaller -r requirements.txt
+
+      - name: Build application
+        run: |
+          pyinstaller --onedir --windowed \
+            --name "Archives Subclipper" \
+            --add-data "archives_subclipper_logo.png:." \
+            archive_subclipper.py
+
+      - name: Zip the build
+        run: |
+          cd dist
+          zip -r "Archives-Subclipper-macOS12.zip" "Archives Subclipper.app"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Archives-Subclipper-macOS12
+          path: dist/Archives-Subclipper-macOS12.zip
