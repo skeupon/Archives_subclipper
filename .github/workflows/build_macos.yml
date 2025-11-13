@@ -27,8 +27,9 @@ jobs:
         run: |
           pyinstaller --noconfirm --windowed --name "Archives Subclipper" archive_subclipper.py
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Archives-Subclipper-macOS
-          path: dist/
+     - name: Upload artifact
+  uses: actions/upload-artifact@v4
+  with:
+    name: Archives-Subclipper-macOS
+    path: dist/
+
